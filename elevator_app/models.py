@@ -6,6 +6,22 @@ class Elevator(models.Model):
     status = models.CharField(max_length=10, default='stopped')  # Possible values: 'up', 'down', 'stopped'
     is_operational = models.BooleanField(default=True)
 
+    def move_up(self):
+        if self.is_operational:
+            self.current_floor += 1
+            self.status = 'up'
+            self.save()
+    
+    def move_down(self):
+        if self.is_operational and self.current_floor > 0:
+            self.current_floor -= 1
+            self.status = 'down'
+            self.save()
+
+    def stop(self):
+        self.status = 'stopped'
+        self.save()
+
     def __str__(self):
         return f"Elevator {self.id} on floor {self.current_floor}"
     
